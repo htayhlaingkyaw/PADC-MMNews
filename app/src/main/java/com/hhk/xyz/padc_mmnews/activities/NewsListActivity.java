@@ -16,9 +16,12 @@ import android.view.MenuItem;
 
 import com.hhk.xyz.padc_mmnews.R;
 import com.hhk.xyz.padc_mmnews.adapters.NewsAdapter;
+import com.hhk.xyz.padc_mmnews.component.EmptyViewPod;
+import com.hhk.xyz.padc_mmnews.component.SmartRecyclerView;
 import com.hhk.xyz.padc_mmnews.delegates.NewsItemDelegate;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class NewsListActivity extends AppCompatActivity implements NewsItemDelegate {
@@ -26,12 +29,19 @@ public class NewsListActivity extends AppCompatActivity implements NewsItemDeleg
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer_layout;
 
+    @BindView(R.id.rv_news)
+    SmartRecyclerView rvNews;
+
+    @BindView(R.id.vp_empty_news)
+    EmptyViewPod vpEmptyNews;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this,this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +54,9 @@ public class NewsListActivity extends AppCompatActivity implements NewsItemDeleg
             }
         });
 
-        RecyclerView rvNews = findViewById(R.id.rv_news);
+       // RecyclerView rvNews = findViewById(R.id.rv_news);
+        //rvNews.setVisibility();
+        rvNews.setEmptyView(vpEmptyNews);
         rvNews.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         NewsAdapter newsAdapter = new NewsAdapter(getApplicationContext(), this);
         rvNews.setAdapter(newsAdapter);
